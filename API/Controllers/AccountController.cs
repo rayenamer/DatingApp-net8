@@ -5,13 +5,19 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
-public class AccountController(DataContext context, ITokenService tokenService) : BaseApiController
+public class AccountController
+(
+    DataContext context,
+    ITokenService tokenService,
+    IMapper mapper
+) : BaseApiController
 {
     [HttpPost("register")] //account/register
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
@@ -21,34 +27,36 @@ public class AccountController(DataContext context, ITokenService tokenService) 
             
             return Unauthorized("username exist");
         }
-        return Ok();
 
 
-       // using var hmac = new HMACSHA512();
 
-       //var user = new AppUser
-       //{
-       //    UserName = registerDto.Username.ToLower(),
-       //    PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-       //    PasswordSalt = hmac.Key
-       //};
+       using var hmac = new HMACSHA512();
 
-       //context.Users.Add(user);
-       //await context.SaveChangesAsync();
+       var user = mapper.Map<AppUser>(registerDto);
 
-       //return new UserDto
-       //{
-       //    UserName = user.UserName,
-       //    Token = tokenService.CreateToken(user)
-       //};
+       user.UserName =  registerDto.Username.ToLower();
+       user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password));
+       user.PasswordSalt = hmac.Key;
+
+       context.Users.Add(user);
+       await context.SaveChangesAsync();
+       return new UserDto
+       {
+           UserName = user.UserName,
+           Token = tokenService.CreateToken(user),
+           KnownAs = user.KnownAs,
+           gender = user.Gender,
+       };
     }
 
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
     {
         // Fetch the user from the database based on the username
-        var user = await context.Users.FirstOrDefaultAsync(x =>
-            x.UserName == loginDto.Username.ToLower());
+        var user = await context.Users
+            .Include(p => p.Photos)
+                .FirstOrDefaultAsync(x =>
+                    x.UserName == loginDto.Username.ToLower());
 
         // Return a 401 Unauthorized response if the user does not exist
         if (user == null)
@@ -69,7 +77,10 @@ public class AccountController(DataContext context, ITokenService tokenService) 
         return new UserDto
         {
             UserName = user.UserName,
-            Token = tokenService.CreateToken(user)
+            KnownAs = user.KnownAs,
+            Token = tokenService.CreateToken(user),
+            PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
+            gender = user.Gender,
         };
     }
 
