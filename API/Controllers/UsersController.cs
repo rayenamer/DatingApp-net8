@@ -1,4 +1,4 @@
-using System.Security.Claims;
+ using System.Security.Claims;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
@@ -19,6 +19,7 @@ public class UsersController
     IPhotoService photoService
 ) : BaseApiController
 {
+    
     [HttpGet]
     public async Task<ActionResult<IEnumerable<MemberDto>>> 
     GetUsers([FromQuery]UserParams userParams)
