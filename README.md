@@ -79,5 +79,4 @@ If you would like to contribute to this project, please follow these steps:
 
 ## Author
 - Rayen Ameur
-- Contact me[www.linkedin.com/in/rayen-ameur-10000s000]
 
