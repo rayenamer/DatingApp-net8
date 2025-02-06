@@ -1,6 +1,4 @@
 
-# Project Name
-
 ## Description
 This project is a social media platform that allows users to connect, share content, and interact with each other. It provides a dynamic user experience and robust backend services, ensuring secure and efficient operations.
 ## Technologies Used
