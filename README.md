@@ -2,9 +2,7 @@
 # Project Name
 
 ## Description
-A brief description of your project, its purpose, and the problem it solves. For example:
-This project is a dating application that allows users to connect, chat, and share photos. It utilizes Clean Architecture principles to ensure maintainability and scalability.
-
+This project is a social media platform that allows users to connect, share content, and interact with each other. It provides a dynamic user experience and robust backend services, ensuring secure and efficient operations.
 ## Technologies Used
 - .NET 8
 - ASP.NET Core
