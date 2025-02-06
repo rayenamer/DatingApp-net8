@@ -10,11 +10,11 @@ This project is a social media platform that allows users to connect, share cont
 - Cloudinary (for media storage)
 
 ## Key Features
-- # JWT Authentication: Secure user authentication and authorization.
-- # Private Messaging: Users can send and receive messages privately.
-- # Gallery Management: Each user can manage their own gallery to upload and share photos.
-- # Presence Tracking: Real-time tracking of user online status.
-- # Likes Between Members: Users can like posts and content shared by others.
+- ### JWT Authentication: Secure user authentication and authorization.
+- ### Private Messaging: Users can send and receive messages privately.
+- ### Gallery Management: Each user can manage their own gallery to upload and share photos.
+- ### Presence Tracking: Real-time tracking of user online status.
+- ### Likes Between Members: Users can like posts and content shared by others.
 
 ## Architecture Overview
 This project follows the Clean Architecture principles, which separates the application into distinct layers:
